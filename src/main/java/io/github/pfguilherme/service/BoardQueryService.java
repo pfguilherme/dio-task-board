@@ -1,5 +1,6 @@
 package io.github.pfguilherme.service;
 
+import io.github.pfguilherme.dto.BoardDetailsDTO;
 import io.github.pfguilherme.persistence.dao.BoardColumnDAO;
 import io.github.pfguilherme.persistence.dao.BoardDAO;
 import io.github.pfguilherme.persistence.entity.BoardEntity;
@@ -26,6 +27,24 @@ public class BoardQueryService
             entity.setBoardColumns(boardColumnDAO.findByBoardId(entity.getId()));
 
             return Optional.of(entity);
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<BoardDetailsDTO> showBoardDetails(final Long id) throws SQLException
+    {
+        var boardDAO = new BoardDAO(connection);
+        var boardColumnDAO = new BoardColumnDAO(connection);
+
+        var optional = boardDAO.findById(id);
+        if (optional.isPresent())
+        {
+            var entity = optional.get();
+            var columns = boardColumnDAO.findByBoardIdWithDetails(entity.getId());
+            var dto = new BoardDetailsDTO(entity.getId(), entity.getName(), columns);
+
+            return Optional.of(dto);
         }
 
         return Optional.empty();

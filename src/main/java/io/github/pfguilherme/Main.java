@@ -2,6 +2,7 @@ package io.github.pfguilherme;
 
 import io.github.pfguilherme.persistence.config.ConnectionConfig;
 import io.github.pfguilherme.persistence.migration.MigrationStrategy;
+import io.github.pfguilherme.ui.MainMenu;
 
 import java.sql.SQLException;
 
@@ -13,5 +14,6 @@ public class Main
         {
             new MigrationStrategy(connection).executeMigration();
         }
+        new MainMenu().execute();
     }
 }
